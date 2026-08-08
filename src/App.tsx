@@ -6,7 +6,6 @@ import { ExperienceTimeline } from './components/experience/ExperienceTimeline';
 import { ProjectsSection } from './components/projects/ProjectsSection';
 import { AiNeuralSection } from './components/ai/AiNeuralSection';
 import { SkillsConstellation } from './components/skills/SkillsConstellation';
-import { MetricsSection } from './components/metrics/MetricsSection';
 import { InteractiveTerminal } from './components/terminal/InteractiveTerminal';
 import { ContactSection } from './components/contact/ContactSection';
 import { Footer } from './components/footer/Footer';
@@ -21,7 +20,6 @@ export const App: React.FC = () => {
     'projects',
     'ai-engine',
     'skills',
-    'metrics',
     'terminal',
     'contact',
   ]);
@@ -42,7 +40,6 @@ export const App: React.FC = () => {
         <ProjectsSection />
         <AiNeuralSection />
         <SkillsConstellation />
-        <MetricsSection />
         <InteractiveTerminal />
         <ContactSection />
       </main>

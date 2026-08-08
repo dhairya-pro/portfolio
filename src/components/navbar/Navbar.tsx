@@ -26,7 +26,6 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
     { id: 'projects', label: 'Projects' },
     { id: 'ai-engine', label: 'AI Architecture' },
     { id: 'skills', label: 'Skills' },
-    { id: 'metrics', label: 'Metrics' },
     { id: 'terminal', label: 'Terminal' },
     { id: 'contact', label: 'Contact' },
   ];

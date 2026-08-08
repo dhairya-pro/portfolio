@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Code2, ArrowUpRight, Sparkles, Layers, ShieldCheck, Activity } from 'lucide-react';
+import { Code2, ArrowUpRight, Sparkles, ExternalLink, Globe, Wrench, ShieldCheck } from 'lucide-react';
 import { PROJECTS, ProjectItem } from '../../data/projectsData';
-import { CollabBoardPreview } from './CollabBoardPreview';
-import { HealthBridgePreview } from './HealthBridgePreview';
 import { ProjectCaseStudyModal } from './ProjectCaseStudyModal';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
@@ -22,47 +20,54 @@ export const ProjectsSection: React.FC = () => {
         <div className="space-y-4 text-center sm:text-left">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#00F0FF]/10 border border-[#00F0FF]/30 text-[#00F0FF] text-xs font-mono">
             <Code2 className="w-3.5 h-3.5" />
-            <span>Featured Digital Products</span>
+            <span>Featured Digital Products & Client Work</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Production Software & Case Studies
+            Production Software & Projects
           </h2>
           <p className="text-sm sm:text-base text-gray-400 max-w-2xl">
-            Real-time multiplayer engines, AI healthcare platforms, and production client applications.
+            Live commercial client web applications and engineered technical projects.
           </p>
         </div>
 
-        {/* Featured Projects List */}
+        {/* Projects List */}
         <div className="space-y-12">
           {PROJECTS.map((project) => {
-            const isCollab = project.id === 'collabboard';
-            const isHealth = project.id === 'healthbridge-ai';
-
             return (
               <motion.div
                 key={project.id}
                 initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                whileHover={reducedMotion ? {} : { y: -6 }}
+                whileHover={reducedMotion ? {} : { y: -5 }}
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.4 }}
-                className="group relative rounded-3xl bg-[#0B0C10] border border-[#1F2430] hover:border-[#00F0FF]/50 transition-all duration-300 shadow-[0_10px_40px_rgba(0,0,0,0.6)] overflow-hidden"
+                className={`group relative rounded-3xl bg-[#0B0C10] border transition-all duration-300 shadow-[0_10px_40px_rgba(0,0,0,0.6)] overflow-hidden ${
+                  project.isLiveClient
+                    ? 'border-[#00F0FF]/30 hover:border-[#00F0FF]'
+                    : 'border-[#1F2430] hover:border-gray-500'
+                }`}
               >
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 p-6 sm:p-8 items-center">
                   
                   {/* Info Column */}
-                  <div className="lg:col-span-6 space-y-5">
+                  <div className="lg:col-span-7 space-y-5">
                     
                     <div className="flex flex-wrap items-center gap-3">
-                      <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF]/30">
-                        {project.category}
-                      </span>
-                      {project.featured && (
-                        <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30 flex items-center gap-1">
-                          <Sparkles className="w-3 h-3" />
-                          Featured Product
+                      {project.isLiveClient ? (
+                        <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
+                          <Globe className="w-3.5 h-3.5" />
+                          Live Client Platform
+                        </span>
+                      ) : (
+                        <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-purple-500/10 text-purple-400 border border-purple-500/30 flex items-center gap-1.5">
+                          <Wrench className="w-3.5 h-3.5" />
+                          Technical Project
                         </span>
                       )}
+
+                      <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-white/5 text-gray-300 border border-white/10">
+                        {project.category}
+                      </span>
                     </div>
 
                     <div className="space-y-1.5">
@@ -100,40 +105,63 @@ export const ProjectsSection: React.FC = () => {
                       ))}
                     </div>
 
-                    {/* Action Button */}
-                    <div className="pt-2">
+                    {/* Action Buttons */}
+                    <div className="pt-2 flex flex-wrap items-center gap-3">
                       <button
                         onClick={() => setSelectedProject(project)}
                         className="px-5 py-3 rounded-xl font-bold text-xs bg-[#00F0FF] text-[#050505] shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_30px_rgba(0,240,255,0.5)] transition-all flex items-center gap-2"
-                        data-cursor-text="Study"
+                        data-cursor-text="Details"
                       >
-                        <span>View Full Case Study & Architecture</span>
+                        <span>View Project Breakdown</span>
                         <ArrowUpRight className="w-4 h-4" />
                       </button>
+
+                      {project.liveUrl && (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="px-5 py-3 rounded-xl font-semibold text-xs bg-[#0B0C10] text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/10 hover:border-emerald-400 transition-all flex items-center gap-2"
+                          data-cursor-text="Visit"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          <span>Visit Live Website</span>
+                        </a>
+                      )}
                     </div>
 
                   </div>
 
-                  {/* Interactive Preview Column */}
-                  <div className="lg:col-span-6 relative">
-                    {isCollab ? (
-                      <CollabBoardPreview />
-                    ) : isHealth ? (
-                      <HealthBridgePreview />
-                    ) : (
-                      <div className="p-6 rounded-2xl bg-[#090A0E] border border-[#1F2430] space-y-4">
-                        <div className="p-4 rounded-xl bg-[#12141C] border border-white/5 space-y-2">
-                          <h4 className="text-sm font-bold text-white">Client Solution Impact</h4>
-                          <p className="text-xs text-gray-300 leading-relaxed">
+                  {/* Summary Visual Box */}
+                  <div className="lg:col-span-5 relative">
+                    <div className="p-6 rounded-2xl bg-[#090A0E] border border-[#1F2430] space-y-4">
+                      {project.liveUrl ? (
+                        <div className="p-4 rounded-xl bg-[#12141C] border border-emerald-500/20 space-y-2">
+                          <h4 className="text-xs font-mono font-bold text-emerald-400 flex items-center justify-between">
+                            <span>LIVE CLIENT PLATFORM</span>
+                            <ExternalLink className="w-3.5 h-3.5" />
+                          </h4>
+                          <p className="text-xs text-gray-300 leading-relaxed font-sans">
                             {project.solution}
                           </p>
                         </div>
-                        <div className="p-4 rounded-xl bg-[#050505] border border-emerald-500/30 text-xs font-mono text-emerald-400 space-y-1">
-                          <span className="font-bold block">Verified Deliverable:</span>
-                          <span className="text-gray-300">{project.results[0]}</span>
+                      ) : (
+                        <div className="p-4 rounded-xl bg-[#12141C] border border-purple-500/20 space-y-2">
+                          <h4 className="text-xs font-mono font-bold text-purple-400 flex items-center gap-1.5">
+                            <Wrench className="w-3.5 h-3.5" />
+                            <span>ENGINEERED PROJECT</span>
+                          </h4>
+                          <p className="text-xs text-gray-300 leading-relaxed font-sans">
+                            {project.solution}
+                          </p>
                         </div>
+                      )}
+
+                      <div className="p-3 rounded-xl bg-[#050505] border border-white/10 text-xs font-mono text-gray-300 flex items-center justify-between">
+                        <span className="text-gray-400">Key Outcome:</span>
+                        <span className="text-[#00F0FF] font-bold">{project.results[0]}</span>
                       </div>
-                    )}
+                    </div>
                   </div>
 
                 </div>

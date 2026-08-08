@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Briefcase, Calendar, MapPin, ChevronDown, ChevronUp, CheckCircle2, Building2 } from 'lucide-react';
+import { Briefcase, Calendar, MapPin, ChevronDown, ChevronUp, CheckCircle2, Building2, ExternalLink } from 'lucide-react';
 import { EXPERIENCES } from '../../data/experienceData';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
@@ -26,7 +26,7 @@ export const ExperienceTimeline: React.FC = () => {
             Work & Client Experience
           </h2>
           <p className="text-sm sm:text-base text-gray-400 max-w-2xl">
-            Hands-on experience delivering production applications, RESTful APIs, and client digital platforms.
+            Hands-on experience delivering production applications, RESTful APIs, and live client web platforms.
           </p>
         </div>
 
@@ -73,7 +73,7 @@ export const ExperienceTimeline: React.FC = () => {
                         </span>
                         {isCurrent && (
                           <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase font-bold animate-pulse">
-                            Active Internship
+                            Active Role
                           </span>
                         )}
                       </div>
@@ -96,14 +96,39 @@ export const ExperienceTimeline: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="p-2 rounded-xl bg-white/5 text-gray-300 group-hover:text-[#00F0FF] transition-colors">
-                      {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                    <div className="flex items-center gap-3">
+                      {exp.liveUrl && (
+                        <a
+                          href={exp.liveUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-mono font-bold hover:bg-emerald-500/20 transition-colors flex items-center gap-1.5"
+                          title="Visit live platform"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          <span className="hidden sm:inline">Live Site</span>
+                        </a>
+                      )}
+                      <div className="p-2 rounded-xl bg-white/5 text-gray-300 group-hover:text-[#00F0FF] transition-colors">
+                        {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                      </div>
                     </div>
                   </button>
 
                   {/* Summary Bar */}
-                  <div className="px-6 py-3 border-t border-[#1F2430] bg-[#07080B] text-xs text-gray-300 font-sans">
-                    {exp.summary}
+                  <div className="px-6 py-3 border-t border-[#1F2430] bg-[#07080B] text-xs text-gray-300 font-sans flex items-center justify-between">
+                    <span>{exp.summary}</span>
+                    {exp.liveUrl && (
+                      <a
+                        href={exp.liveUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-[11px] font-mono text-[#00F0FF] hover:underline shrink-0 ml-2 hidden sm:inline"
+                      >
+                        {new URL(exp.liveUrl).hostname}
+                      </a>
+                    )}
                   </div>
 
                   {/* Expandable Breakdown */}
@@ -118,7 +143,7 @@ export const ExperienceTimeline: React.FC = () => {
                       >
                         <div className="space-y-3">
                           <h4 className="text-xs font-mono font-bold text-gray-400 uppercase tracking-wider">
-                            Key Responsibilities & Deliverables
+                            Key Responsibilities & Engineering Deliverables
                           </h4>
                           <ul className="space-y-2 text-sm text-gray-300">
                             {exp.highlights.map((h, idx) => (
@@ -145,8 +170,8 @@ export const ExperienceTimeline: React.FC = () => {
                           </div>
                         </div>
 
-                        {/* Technologies */}
-                        <div className="pt-1">
+                        {/* Technologies & Live Link */}
+                        <div className="pt-1 flex flex-wrap items-center justify-between gap-3">
                           <div className="flex flex-wrap gap-2">
                             {exp.technologies.map((tech) => (
                               <span
@@ -157,6 +182,18 @@ export const ExperienceTimeline: React.FC = () => {
                               </span>
                             ))}
                           </div>
+
+                          {exp.liveUrl && (
+                            <a
+                              href={exp.liveUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="px-4 py-2 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 font-mono text-xs font-bold hover:bg-emerald-500/30 transition-all flex items-center gap-2"
+                            >
+                              <span>Visit Platform</span>
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
+                          )}
                         </div>
                       </motion.div>
                     )}
